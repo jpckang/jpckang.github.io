@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://jpckang.github.io/2023/01/29/Lambda-Dependency-Based-Compositional-Semantics/</loc>
+    
+    <lastmod>2023-01-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://jpckang.github.io/2023/01/11/Question-Answering/</loc>
     
     <lastmod>2023-01-11</lastmod>
@@ -31,11 +40,18 @@
 
   <url>
     <loc>https://jpckang.github.io/</loc>
-    <lastmod>2023-01-11</lastmod>
+    <lastmod>2023-01-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
+  
+  <url>
+    <loc>https://jpckang.github.io/tags/semantic-parsing/</loc>
+    <lastmod>2023-01-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
   
 
   

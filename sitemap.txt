@@ -1,4 +1,6 @@
+https://jpckang.github.io/2023/01/29/Lambda-Dependency-Based-Compositional-Semantics/
 https://jpckang.github.io/2023/01/11/Question-Answering/
 https://jpckang.github.io/2023/01/11/whw/
 https://jpckang.github.io/2023/01/11/hello-world/
 https://jpckang.github.io/
+https://jpckang.github.io/tags/semantic-parsing/
