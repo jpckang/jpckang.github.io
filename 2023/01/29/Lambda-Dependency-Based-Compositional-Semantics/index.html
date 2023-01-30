@@ -28,7 +28,7 @@
 <meta property="og:description" content="Like Lambda calculus, lambda DCS is a formal language designed to query Freebase.">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-01-29T21:05:55.000Z">
-<meta property="article:modified_time" content="2023-01-30T09:35:22.573Z">
+<meta property="article:modified_time" content="2023-01-30T09:40:16.435Z">
 <meta property="article:author" content="jpckang">
 <meta property="article:tag" content="semantic parsing">
 <meta name="twitter:card" content="summary">
@@ -186,7 +186,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-01-30 10:35:22" itemprop="dateModified" datetime="2023-01-30T10:35:22+01:00">2023-01-30</time>
+                <time title="Modified: 2023-01-30 10:40:16" itemprop="dateModified" datetime="2023-01-30T10:40:16+01:00">2023-01-30</time>
               </span>
 
           
@@ -205,59 +205,53 @@
 <p>Lambda DCS is a kind of formal language to query the knowledge base. It has simplified expressions compared to lambda calculus, due to elimination of variables and making of implicit existential quantifications. We briefly list the fundamentals here by examples comparing with lambda calculus.</p>
 </blockquote>
 <ul>
-<li>Semantic parsing is the task of transforming the natural utterances into the logical forms. Those forms are in some of formal language such as  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>−</mo></mrow><annotation encoding="application/x-tex">\lambda -</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">λ</span><span class="mord">−</span></span></span></span> calculus. So is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>−</mo></mrow><annotation encoding="application/x-tex">\lambda-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">λ</span><span class="mord">−</span></span></span></span> DCS.</li>
+<li>Semantic parsing is the task of transforming the natural utterances into the logical forms. Those forms are in some of formal language such as  $ \lambda- $ calculus. So is  $ \lambda- $ DCS.</li>
 <li>lambda DCS was designed to query the Freebase.</li>
 </ul>
 <h2 id="fundamentals"><a class="markdownIt-Anchor" href="#fundamentals"></a> Fundamentals</h2>
 <ul>
 <li>
-<p>We have a knowledge base of assertions, namely <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">K</mi></mrow><annotation encoding="application/x-tex">\mathcal{K}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.01445em;">K</span></span></span></span></span> , a set of entities(nodes) <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">E</mi></mrow><annotation encoding="application/x-tex">\mathcal{E}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.08944em;">E</span></span></span></span></span> , a set of properties (edges) <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">P</mi></mrow><annotation encoding="application/x-tex">\mathcal{P}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.08222em;">P</span></span></span></span></span> , then we have <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">K</mi><mo>⊂</mo><mi mathvariant="script">E</mi><mo>×</mo><mi mathvariant="script">P</mi><mo>×</mo><mi mathvariant="script">E</mi></mrow><annotation encoding="application/x-tex">\mathcal{K}\subset \mathcal{E}\times \mathcal{P}\times \mathcal{E}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72243em;vertical-align:-0.0391em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.01445em;">K</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">⊂</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.08944em;">E</span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.08222em;">P</span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.08944em;">E</span></span></span></span></span> .</p>
+<p>We have a knowledge base of assertions, namely $ \mathcal{K} $ , a set of entities(nodes) $ \mathcal{E} $ , a set of properties (edges) $ \mathcal{P} $ , then we have $ \mathcal{K}\subset \mathcal{E}\times \mathcal{P}\times \mathcal{E} $ .</p>
 </li>
 <li>
-<p>We let [condition] denotes the truth value of the condition. ( $\lambda x.[x=3] $ ) denotes the function returns true if and only if x=3.</p>
+<p>We let [condition] denotes the truth value of the condition. ( $ \lambda x.[x=3] $ ) denotes the function returns true if and only if x=3.</p>
 </li>
 <li>
-<p>We let <span class='katex-error' title='ParseError: KaTeX parse error: Undefined control sequence: \textlbrackdbl at position 1: \̲t̲e̲x̲t̲l̲b̲r̲a̲c̲k̲d̲b̲l̲ ̲z \textrbrackdb…'>\textlbrackdbl z \textrbrackdbl</span> be the lambda DCS corresponded to the lambda calculus of z.</p>
+<p>We let $ \textlbrackdbl z \textrbrackdbl $ be the lambda DCS corresponded to the lambda calculus of z.</p>
 </li>
 </ul>
 <h4 id="unary-base-case"><a class="markdownIt-Anchor" href="#unary-base-case"></a> Unary base case</h4>
 <p>a simple entity in lamdba DCS:</p>
-<p class='katex-block katex-error' title='ParseError: KaTeX parse error: Undefined control sequence: \textlbrackdbl at position 54: …[x=Seattle] \\
-\̲t̲e̲x̲t̲l̲b̲r̲a̲c̲k̲d̲b̲l̲ ̲e \textrbrackdb…'>Seattle \Longleftrightarrow \lambda x.[x=Seattle] \\
-\textlbrackdbl e \textrbrackdbl = \lambda x.[x=e]
-</p>
+<p class='katex-block katex-error' title='ParseError: KaTeX parse error: Undefined control sequence: \textlbrackdbl at position 55: …[x=Seattle] \\
+\̲t̲e̲x̲t̲l̲b̲r̲a̲c̲k̲d̲b̲l̲ ̲e \textrbrackdb…'> Seattle \Longleftrightarrow \lambda x.[x=Seattle] \\
+\textlbrackdbl e \textrbrackdbl = \lambda x.[x=e] </p>
 <h3 id="binary-base-case"><a class="markdownIt-Anchor" href="#binary-base-case"></a> Binary base case</h3>
-<p>For a property <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>∈</mo><mi mathvariant="script">P</mi></mrow><annotation encoding="application/x-tex">p\in \mathcal{P}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7335400000000001em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord"><span class="mord mathcal" style="margin-right:0.08222em;">P</span></span></span></span></span>  ,  p is a binary logical form, which denotes a function mapping two arguments to whether p holds:</p>
-<p class='katex-block katex-error' title='ParseError: KaTeX parse error: Undefined control sequence: \textlbrackdbl at position 75: …fBirth(x, y)\\
-\̲t̲e̲x̲t̲l̲b̲r̲a̲c̲k̲d̲b̲l̲ ̲p\textrbrackdbl…'>PlaceOfBirth \Longleftrightarrow \lambda x.\lambda y.PlaceOfBirth(x, y)\\
-\textlbrackdbl p\textrbrackdbl = \lambda x.\lambda y.p(x, y)
-</p>
+<p>For a property $ p\in \mathcal{P} $  ,  p is a binary logical form, which denotes a function mapping two arguments to whether p holds:</p>
+<p class='katex-block katex-error' title='ParseError: KaTeX parse error: Undefined control sequence: \textlbrackdbl at position 76: …fBirth(x, y)\\
+\̲t̲e̲x̲t̲l̲b̲r̲a̲c̲k̲d̲b̲l̲ ̲p\textrbrackdbl…'> PlaceOfBirth \Longleftrightarrow \lambda x.\lambda y.PlaceOfBirth(x, y)\\
+\textlbrackdbl p\textrbrackdbl = \lambda x.\lambda y.p(x, y) </p>
 <h3 id="join"><a class="markdownIt-Anchor" href="#join"></a> Join *</h3>
-<p class='katex-block katex-error' title='ParseError: KaTeX parse error: Undefined control sequence: \textlbrackdbl at position 80: …x, Seattle) \\
-\̲t̲e̲x̲t̲l̲b̲r̲a̲c̲k̲d̲b̲l̲ ̲b.u \textrbrack…'>PlaceOfBirth.Seattle \Longleftrightarrow \lambda x.PlaceOfBirth(x, Seattle) \\
-\textlbrackdbl b.u \textrbrackdbl = \lambda x.\exists y. \textlbrackdbl b \textrbrackdbl(x,y)\and \textlbrackdbl u \textrbrackdbl(y)
-</p>
+<p class='katex-block katex-error' title='ParseError: KaTeX parse error: Undefined control sequence: \textlbrackdbl at position 81: …x, Seattle) \\
+\̲t̲e̲x̲t̲l̲b̲r̲a̲c̲k̲d̲b̲l̲ ̲b.u \textrbrack…'> PlaceOfBirth.Seattle \Longleftrightarrow \lambda x.PlaceOfBirth(x, Seattle) \\
+\textlbrackdbl b.u \textrbrackdbl = \lambda x.\exists y. \textlbrackdbl b \textrbrackdbl(x,y)\and \textlbrackdbl u \textrbrackdbl(y) </p>
 <p>where b is a binary logical form and u is a unary logical form, and b.u is a unary logical form.</p>
 <p><strong>This is a key feature of join (the central operation of lambda DCS). Implicit existential quantification over argument y shared by b and u. This makes it more apparent when binaries are chained.</strong></p>
 <h3 id="intersection"><a class="markdownIt-Anchor" href="#intersection"></a> Intersection</h3>
 <p>a set of scientists born in Seattle:</p>
-<p class='katex-block katex-error' title='ParseError: KaTeX parse error: Undefined control sequence: \and at position 109: …on(x,Scientist)\̲a̲n̲d̲ ̲PlaceOfBirth(x,…'>Profession.Scientists \sqcap PlaceOfBirth.Seattle\\
+<p class='katex-block katex-error' title='ParseError: KaTeX parse error: Undefined control sequence: \and at position 110: …on(x,Scientist)\̲a̲n̲d̲ ̲PlaceOfBirth(x,…'> Profession.Scientists \sqcap PlaceOfBirth.Seattle\\
 \Longleftrightarrow\\
 \lambda x. Profession(x,Scientist)\and PlaceOfBirth(x, Seattle)\\
-\textlbrackdbl u_1\sqcap u_2 \textrbrackdbl = \lambda x.\textlbrackdbl u_1 \textrbrackdbl(x)\and\textlbrackdbl u_2 \textrbrackdbl(x)
-</p>
+\textlbrackdbl u_1\sqcap u_2 \textrbrackdbl = \lambda x.\textlbrackdbl u_1 \textrbrackdbl(x)\and\textlbrackdbl u_2 \textrbrackdbl(x) </p>
 <p>From the perspective of graph pattern, intersection allow tree-structured graph patterns, where branch points correspond to the intersections.</p>
 <h3 id="union"><a class="markdownIt-Anchor" href="#union"></a> Union</h3>
 <p>Intersection corresponds to conjunction, union corresponds to disjunction.</p>
-<p class='katex-block katex-error' title='ParseError: KaTeX parse error: Undefined control sequence: \or at position 66: …da x.[x=Oregon]\̲o̲r̲ ̲[x=Washington]\…'>Oregon \sqcup Washington \Longleftrightarrow \lambda x.[x=Oregon]\or [x=Washington]\\
-\textlbrackdbl u_1\sqcup u_2 \textrbrackdbl = \lambda x.\textlbrackdbl u_1 \textrbrackdbl(x)\or\textlbrackdbl u_2 \textrbrackdbl(x)
-</p>
+<p class='katex-block katex-error' title='ParseError: KaTeX parse error: Undefined control sequence: \or at position 67: …da x.[x=Oregon]\̲o̲r̲ ̲[x=Washington]\…'> Oregon \sqcup Washington \Longleftrightarrow \lambda x.[x=Oregon]\or [x=Washington]\\
+\textlbrackdbl u_1\sqcup u_2 \textrbrackdbl = \lambda x.\textlbrackdbl u_1 \textrbrackdbl(x)\or\textlbrackdbl u_2 \textrbrackdbl(x) </p>
 <h3 id="negation"><a class="markdownIt-Anchor" href="#negation"></a> Negation</h3>
 <p>US states not bordering California</p>
-<p class='katex-block katex-error' title='ParseError: KaTeX parse error: Undefined control sequence: \and at position 91: …ype(x, USState)\̲a̲n̲d̲ ̲\neg Border(x, …'>Type.USState\sqcap \neg Border.California\\
+<p class='katex-block katex-error' title='ParseError: KaTeX parse error: Undefined control sequence: \and at position 92: …ype(x, USState)\̲a̲n̲d̲ ̲\neg Border(x, …'> Type.USState\sqcap \neg Border.California\\
 \Longleftrightarrow \lambda x.Type(x, USState)\and \neg Border(x, California)\\
-\textlbrackdbl \neg u \textrbrackdbl = \lambda x.\neg\textlbrackdbl u \textrbrackdbl(x)
-</p>
+\textlbrackdbl \neg u \textrbrackdbl = \lambda x.\neg\textlbrackdbl u \textrbrackdbl(x) </p>
 
     </div>
 
