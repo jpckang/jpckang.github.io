@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-07-22T17:06:48+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Your awesome title</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/2024/07/22/welcome-to-jekyll.html" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2024-07-22T16:23:12+08:00</published><updated>2024-07-22T16:23:12+08:00</updated><id>http://localhost:4000/jekyll/update/2024/07/22/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/2024/07/22/welcome-to-jekyll.html"><![CDATA[<p>You’ll find this post in your <code class="language-plaintext highlighter-rouge">_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code class="language-plaintext highlighter-rouge">jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
+
+<p>Jekyll requires blog post files to be named according to the following format:</p>
+
+<p><code class="language-plaintext highlighter-rouge">YEAR-MONTH-DAY-title.MARKUP</code></p>
+
+<p>Where <code class="language-plaintext highlighter-rouge">YEAR</code> is a four-digit number, <code class="language-plaintext highlighter-rouge">MONTH</code> and <code class="language-plaintext highlighter-rouge">DAY</code> are both two-digit numbers, and <code class="language-plaintext highlighter-rouge">MARKUP</code> is the file extension representing the format used in the file. After that, include the necessary front matter. Take a look at the source for this post to get an idea about how it works.</p>
+
+<p>Jekyll also offers powerful support for code snippets:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">print_hi</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="s2">"Hi, </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">end</span>
+<span class="n">print_hi</span><span class="p">(</span><span class="s1">'Tom'</span><span class="p">)</span>
+<span class="c1">#=&gt; prints 'Hi, Tom' to STDOUT.</span></code></pre></figure>
+
+<p>Check out the <a href="https://jekyllrb.com/docs/home">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://talk.jekyllrb.com/">Jekyll Talk</a>.</p>]]></content><author><name></name></author><category term="jekyll" /><category term="update" /><summary type="html"><![CDATA[You’ll find this post in your _posts directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run jekyll serve, which launches a web server and auto-regenerates your site when a file is updated.]]></summary></entry><entry><title type="html">Transformers</title><link href="http://localhost:4000/2023/02/01/Transformers.html" rel="alternate" type="text/html" title="Transformers" /><published>2023-02-01T15:47:57+08:00</published><updated>2023-02-01T15:47:57+08:00</updated><id>http://localhost:4000/2023/02/01/Transformers</id><content type="html" xml:base="http://localhost:4000/2023/02/01/Transformers.html"><![CDATA[<blockquote>
+  <p>We will start by introducing the idea of pretraining to explaining why we need pretrained language models, but here we only focus on the most common architecture to implement this idea.
+We firstly introduce the core of attention mechanism, and how self-attention layer works. Next, we describe the structure of a transformer block, which contains self-attention layers. We then move to two other designs of transformer: multi-heads attention and positional embeddings.</p>
+</blockquote>
+
+<h2 id="introduction">Introduction</h2>
+<h3 id="distribution-hypothesis">Distribution Hypothesis</h3>
+<p>The idea is that word meanings (loosely called) can be learned even without any grounding in the real world, soley based on the content of the text we have encountered in our lives. Via the words they co-occur with, we can obtain their word meanings.
+This means, long after some words’ initial acquisition in novel context, that we can still learn knowledge through this process (through context) during language processing.</p>
+
+<h3 id="pretraining">Pretraining</h3>
+<p>We can formalize the above idea to pretraining, which is learning some representation of word meanings (or sentences) by very large amounts of texts.
+The most common architecture for language modelling is <strong>transformer</strong>. It offers new mechanisms like <strong>self-attention and positional encodings</strong> that can represent time and help us focus on how words relate to each other over long distances.</p>
+
+<h2 id="self-attention-networks">Self-Attention Networks</h2>
+<blockquote>
+  <p>architecture of transformers are unlike LSTMs, which are based on recurrent connections (they are hard to parallelize), instead, they can be trained more efficiently.</p>
+</blockquote>
+
+<h3 id="components-of-a-transformer">Components of a transformer</h3>
+<p>What transformers do is to map sequences of input vectors ($\textbf{x}_1,…,\textbf{x}_n$) into sequences of output vectors ($\textbf{y}_1,…,\textbf{y}_n$) of the <strong>same length</strong>. 
+A transformer is made up of stacks of transformer <strong>blocks</strong>. Each block is a multi-layer networks, consisting of simple linear layers, fnn, and <strong>self-attention layers</strong>, which is the focus of this section.</p>
+
+<h3 id="self-attention-layers">Self-attention layers</h3>
+<p>We firstly describe the core and a simplified version of how self-attention approach works, then we introduce the innovation of such process.
+![[information flow in a causal self-attention model.png]]
+The figure above illustrates the information flow in a self-attention model.</p>
+<ul>
+  <li>We call it causal or masked, or backward-looking self-attention layer, because for each item being processed, the model has access to all the previous inputs (including the current one).
+    <ul>
+      <li>this means that we can use them for autoregressive generation</li>
+    </ul>
+  </li>
+  <li>We can also see that a self-attention layer takes sequences of input and maps them into the same length output sequences as well.</li>
+  <li>Computation of each item is independent of each other
+    <ul>
+      <li>this means that we can parallelize the both forward inference and training of such models.</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="core-of-attention-based-approach">Core of attention-based approach</h4>
+<ul>
+  <li><strong>compare</strong> an item of interest to a collection of other items in a way that reveals their relevance in the current context
+    <ul>
+      <li>which means that through those comparisons, we can have a kind of representation for a sentence using words in the sentence.
+        <ul>
+          <li>so, in the case of self-attention, those comparisons are to other elements within a given sequence</li>
+        </ul>
+      </li>
+      <li>results of such comparisons are used to compute an output for the current input</li>
+      <li>example below is computation for one of the output sequences $y_i$
+        <ul>
+          <li>we use a simple form of <strong>comparison</strong>, dot product:
+            <ul>
+              <li>$score(\textbf{x}_i,\textbf{x}_j) = \textbf{x}_i\cdot\textbf{x}_j$</li>
+              <li>in this case, the $i$th element of x is the current focus of attention, $x_3$, and we compare it with the two previous items $x_1,x_2$ and $x_3$ itself, so $j$=1,2,3</li>
+            </ul>
+          </li>
+          <li>to avoid numerical values being too large, we pass them through a softmax to <strong>normalize</strong> them, giving a probability distribution and <strong>create a vector of weights</strong>: \(\begin{align} \alpha_{ij}&amp;=softmax(score(x_i, x_j))\ \forall j\leq i \\ &amp;=\frac{exp(score(x_i,x_j))}{\sum_{k=1}^{i}exp(score(x_i,x_k))}\ \forall j&lt;i \end{align}\)</li>
+          <li>now we have a set of results of comparisons as weights, we can <strong>straighforwardly use weighted sum</strong> to generate an output from inputs:
+            <ul>
+              <li>$y_i = \sum_{j\leq i}\alpha_{ij}x_j$</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="transformers">Transformers</h4>
+<p>We now have an overview of how attention works, but transformers have a more sophisticated way to represent how words can be contributed to the represention of longer inputs. Transformers do this by assigning the input embeddings with three different roles (and this is done by three different weight matrices).</p>
+<ul>
+  <li>For an input embedding, during the whole process of attention, it has three roles:
+    <ul>
+      <li>when it is being compared to other preceding inputs, it is the current focus of attention. We call it <strong>query</strong>.</li>
+      <li>when it is being compared to the current focus of attention, it is a preceding input. We call it <strong>key</strong>.</li>
+      <li>when it is being used to compute the output for the current focus of attention, we call it <strong>value</strong>.</li>
+    </ul>
+  </li>
+  <li>to capture the different roles, we give them different weight matrices to project each input embedding into a representation of its role:
+    <ul>
+      <li>$\textbf{q}_i = \textbf{W}^Q\textbf{x}_i;\ \textbf{k}_i=\textbf{W}^K\textbf{x}_i;\ \textbf{v}_i=\textbf{W}^V\textbf{x}_i$</li>
+    </ul>
+  </li>
+  <li>now we will compute the comparisons and output using the right roles:
+    <ul>
+      <li>$score(\textbf{x}_i,\textbf{x}_j)= \textbf{q}_i\cdot\textbf{k}_j$</li>
+      <li>before passing scores to softmax, we have to consider the result of dot product being too large, and exponentiating large values will cause numerical issues and gradient loss
+        <ul>
+          <li>so we will scale the dot product down with:
+            <ul>
+              <li>$score(\textbf{x}_i,\textbf{x}_j)=\frac{\textbf{q}_i\cdot\textbf{k}_j}{\sqrt{d_k}}$</li>
+              <li>$d_k$ is the dimensionality of query and key vectors</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>the softmax calculation resulting in $\alpha_{ij}$ is the same, we just want to normalize the scores</li>
+      <li>$\textbf{y}<em>i=\sum</em>{j\leq i}\alpha_{ij}\textbf{v}_j$</li>
+    </ul>
+  </li>
+  <li>up to this point, we know how to calculate a single output at a single time step <em>i</em>, however, every $\textbf{y}_i$ can be computed in parrallel because we have access to the entire sequence of input tokens all the time. We use efficient matrix muliplication routines:
+    <ul>
+      <li>pack all the input tokens into one input matrix $\textbf{X}\in \mathbb{R}^{N\times d}$ , so we have N input tokens, dimension of each is d, one row of <strong>X</strong> is one token.</li>
+      <li>the key, query, value weight matrices now have the dimensionality of $d\times d$, we will mulitply them to input matrix
+        <ul>
+          <li>$\textbf{Q}=\textbf{X}\textbf{W}^Q; \ \textbf{K}=\textbf{X}\textbf{W}^K; \ \textbf{V}=\textbf{X}\textbf{W}^V$</li>
+          <li>three matrices $\in \mathbb{R}^{N\times d}$</li>
+        </ul>
+      </li>
+      <li>now we can reduce the entire self-attention step for an entire sequence of N input tokens to:
+        <ul>
+          <li>$SelfAttention(\textbf{Q},\textbf{K},\textbf{V})=softmax(\frac{\textbf{Q}\textbf{K}^{\intercal}}{\sqrt{d_k}})\mathbf{V}$</li>
+          <li>we should be able to describe the above computation step by step now
+            <ul>
+              <li>we calculate the comparison result(using dot product) for all the requisite query-key vectors in one matrix multiplication using the query and key matrices, which gives a product of shape $N\times N$</li>
+              <li>then we scale the scores down before passing them to the softmax function to avoid numerical issues and gradient loss</li>
+              <li>next we softmax it for normalization and create a weight matrix</li>
+              <li>finally we calculate the weight sum for each output in one matrix multiplication using the value matrix</li>
+            </ul>
+          </li>
+          <li>however, $\mathbf{QK}^{\intercal}$ is inappropriate
+            <ul>
+              <li>because it actually calculate the scores for each query with every key, <em>including those that follow the query.</em></li>
+              <li>this means we are predicting the next word under the condition that we already know the next word</li>
+              <li>to fix this, we will eliminate all the scores which represent the following tokens by zeroing out the upper-triangular elements in the $\mathbf{QK}^{\intercal}$ matrix.![[attention comparison matrix.png]]</li>
+              <li>limit the input length
+                <ul>
+                  <li>one more issue we can see from the figure above, the attention is quadratic in the length of the input because we calculate the dot products between each pair of the query-key value. This will lead to extremely expensive calculation if the input consists of long documents.</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="transformer-blocks">Transformer Blocks</h4>
+<p>![[transformer block.png]]
+Now we discuss the structure of transformer and how each component works briefly.
+From the figure above, we have a clear overview of what a transfomer block consists of:</p>
+<ul>
+  <li>self-attention layer, where the core of attention mechanism lies.</li>
+  <li>residual connections
+    <ul>
+      <li>pass information from a lower layer to a higher layer without going throught the intermediate layers</li>
+      <li>more details of how residual connections can help, see the paper [[deep residual learning for image recognition.pdf]]</li>
+    </ul>
+  </li>
+  <li>layer norm [[layer normalization.pdf]]
+    <ul>
+      <li>layer normalization can help improve the training performance in deep neural networks by keeping the values of a hidden layer in a range that facilitates gradient-based training</li>
+      <li>first, we calculate the mean and std
+        <ul>
+          <li>$\mu = \frac{1}{d_h}\sum_{i=1}^{d_h}x_i$</li>
+          <li>$\sigma=\sqrt{\frac{1}{d_h}\sum_{i=1}^{d_h}(x_i-\mu)^2}$</li>
+        </ul>
+      </li>
+      <li>then we normalize the values:
+        <ul>
+          <li>$\hat{x}=\frac{x-\mu}{\sigma}$</li>
+        </ul>
+      </li>
+      <li>to implement the layer normalizaiton, we have two learnable parameters:
+        <ul>
+          <li>$LayerNorm=\gamma\hat{x}+\beta$ , (gain and offset values)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>we can represent a transformer block as:
+    <ul>
+      <li>$\mathbf{z}=LayerNorm(\mathbf{x}+SelfAttention(\mathbf{x}))$</li>
+      <li>$\mathbf{y}=LayerNorm(\mathbf{z}+FNN(\mathbf{z}))$</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="multihead-attention">Multihead attention</h4>
+<p>Why we need multihead attention and what they are:</p>
+<ul>
+  <li>Words in a sentence can hold different relationships simultaneously, including syntactic, semantic, and discourse relationships.</li>
+  <li>A single transformer block cannot learn to capture all these relationships.</li>
+  <li>so we introduce the multihead self-attention layers:
+    <ul>
+      <li>Multihead attention layers are sets of self-attention layers, we call heads, that reside in parallel layers at the same depth in a model, each with its own set of parameters.</li>
+      <li>with these distinct parameters, we can capture the different aspects of relationships at the same level of abstraction</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>How multiheads attention works</strong>
+\(\begin{align}
+MultiHeadAttention(\mathbf{X})=(\mathbf{head}_1\oplus\mathbf{head}_2...\oplus\mathbf{head}_h)\mathbf{W}^O \\
+Q=\mathbf{XW}_i^Q; \ \mathbf{K}=\mathbf{XW}_i^K; \ \mathbf{V}=\mathbf{XW}_i^V \\
+\mathbf{head}_i=SelfAttention(\mathbf{Q,K,V})
+\end{align}\)</p>
+
+<ul>
+  <li>for each head <em>i</em>, it has its own set of key, query, value matrices $\mathbf{W}_i^Q,\mathbf{W}_i^K,\mathbf{W}_i^V$</li>
+  <li>we calculate the output of each head using such matrices:
+    <ul>
+      <li>unlike a single head attention, they do not have the same dimensionality of input and output vectors <em>d</em>, but have their own
+        <ul>
+          <li>$\mathbf{W}_i^Q\in \mathbb{R}^{d\times d_k}$, $\mathbf{W}_i^K\in \mathbb{R}^{d\times d_k}$, $\mathbf{W}_i^V\in \mathbb{R}^{d\times d_v}$</li>
+          <li>they can project the packed input matrix <strong>X</strong> into $\mathbf{Q}\in \mathbb{R}^{N\times d_k}$, $\mathbf{K}\in \mathbb{R}^{N\times d_k}$, $\mathbf{V}\in \mathbb{R}^{N\times d_v}$ as different roles in the attention mechanism</li>
+          <li>$\mathbf{Q,K,V}$ are used to compute the self-attention, we review this here:
+            <ul>
+              <li>$SelfAttention(\mathbf{Q,K,V})=softmax(\frac{\mathbf{QK}^{\intercal}}{\sqrt{d_k}})\mathbf{V}$</li>
+            </ul>
+          </li>
+          <li>the output of each of the <em>h</em> heads is in shape $N\times d_v$</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>then, we combine the those output vectors and scale them down to <em>d</em>
+    <ul>
+      <li>by concatenating all the heads’ outputs</li>
+      <li>and using another linear project $\mathbf{W}^O\in \mathbb{R}^{hd_v\times d}$</li>
+      <li>so we reduce it to the original output dimension for each token, $N\times d$  ![[multihead attention layer.png]]</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="positional-embeddings">Positional embeddings</h4>
+<p>To model the position of each token in an input sequence, we moodify the input embeddings by combining them with positional embeddings which are specific to each position.
+<strong>How are positional embeddings generated?</strong></p>
+<ul>
+  <li>a simple method
+    <ul>
+      <li>start with randomly initialized embeddings according to each possible input position up to some maximum length (we certainly can have an embedding for some position n, they are learned as with word embeddings during training)</li>
+      <li>add them into the corresponding input word embedding (just add, not concatenating)</li>
+      <li>and we have a new embedding for further processing![[simple way for positional embedding.png]]</li>
+    </ul>
+  </li>
+  <li>we have some problems in this approach:
+    <ul>
+      <li>initially, we may have plenty of training examples, which requires lots of initial positions in our inputs</li>
+      <li>but we might have correspondingly fewer positions at the outer length limits(?unclear)</li>
+      <li>there will be some latter embeddings that are poorly trained so it may not well generalize during testing</li>
+    </ul>
+  </li>
+  <li>An alternative approach:
+    <ul>
+      <li>choose a static function that maps integer inputs to real-values vectores in a way that captures the inherent relationshipsa among positions</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>refer to the original transformer paper for more detailed design
+[[attention is all you need.pdf]]</p>
+</blockquote>]]></content><author><name></name></author><category term="deep" /><category term="learning" /><summary type="html"><![CDATA[Transformers introduces attention mechanism to efficiently represent sentences.]]></summary></entry><entry><title type="html">Lambda Dependency-Based Compositional Semantics</title><link href="http://localhost:4000/2023/01/29/Lambda-Dependency-Based-Compositional-Semantics.html" rel="alternate" type="text/html" title="Lambda Dependency-Based Compositional Semantics" /><published>2023-01-29T22:05:55+08:00</published><updated>2023-01-29T22:05:55+08:00</updated><id>http://localhost:4000/2023/01/29/Lambda-Dependency-Based-Compositional-Semantics</id><content type="html" xml:base="http://localhost:4000/2023/01/29/Lambda-Dependency-Based-Compositional-Semantics.html"><![CDATA[<blockquote>
+  <p>Lambda DCS is a kind of formal language to query the knowledge base. It has simplified expressions compared to lambda calculus, due to elimination of variables and making of implicit existential quantifications. We briefly list the fundamentals here by examples comparing with lambda calculus.</p>
+</blockquote>
+
+<ul>
+  <li>Semantic parsing is the task of transforming the natural utterances into the logical forms. Those forms are in some of formal language such as  $\lambda-$ calculus. So is  $\lambda-$ DCS.</li>
+  <li>lambda DCS was designed to query the Freebase.</li>
+</ul>
+
+<h2 id="fundamentals">Fundamentals</h2>
+
+<ul>
+  <li>
+    <p>We have a knowledge base of assertions, namely $\mathcal{K}$ , a set of entities(nodes) $\mathcal{E}$ , a set of properties (edges) $\mathcal{P}$ , then we have $\mathcal{K}\subset \mathcal{E}\times \mathcal{P}\times \mathcal{E}$ .</p>
+  </li>
+  <li>We let [condition] denotes the truth value of the condition. ( $\lambda x.[x=3]$ ) denotes the function returns true if and only if x=3.</li>
+  <li>We let $\textlbrackdbl z \textrbrackdbl$ be the lambda DCS corresponded to the lambda calculus of z.</li>
+</ul>
+
+<h4 id="unary-base-case">Unary base case</h4>
+
+<p>a simple entity in lamdba DCS:</p>
+
+\[Seattle\Longleftrightarrow\lambda x.[x=Seattle] \\
+\textlbrackdbl e \textrbrackdbl = \lambda x.[x=e]\]
+
+<h3 id="binary-base-case">Binary base case</h3>
+
+<p>For a property $p\in \mathcal{P}$  ,  p is a binary logical form, which denotes a function mapping two arguments to whether p holds:</p>
+
+\[PlaceOfBirth \Longleftrightarrow \lambda x.\lambda y.PlaceOfBirth(x, y)\\
+\textlbrackdbl p\textrbrackdbl = \lambda x.\lambda y.p(x, y)\]
+
+<h3 id="join-">Join *</h3>
+
+\[PlaceOfBirth.Seattle \Longleftrightarrow \lambda x.PlaceOfBirth(x, Seattle) \\
+\textlbrackdbl b.u \textrbrackdbl = \lambda x.\exists y. \textlbrackdbl b \textrbrackdbl(x,y)\and \textlbrackdbl u \textrbrackdbl(y)\]
+
+<p>where b is a binary logical form and u is a unary logical form, and b.u is a unary logical form.</p>
+
+<p><strong>This is a key feature of join (the central operation of lambda DCS). Implicit existential quantification over argument y shared by b and u. This makes it more apparent when binaries are chained.</strong></p>
+
+<h3 id="intersection">Intersection</h3>
+
+<p>a set of scientists born in Seattle:</p>
+
+\[Profession.Scientists \sqcap PlaceOfBirth.Seattle\\
+\Longleftrightarrow\\
+\lambda x. Profession(x,Scientist)\and PlaceOfBirth(x, Seattle)\\
+\textlbrackdbl u_1\sqcap u_2 \textrbrackdbl = \lambda x.\textlbrackdbl u_1 \textrbrackdbl(x)\and\textlbrackdbl u_2 \textrbrackdbl(x)\]
+
+<p>From the perspective of graph pattern, intersection allow tree-structured graph patterns, where branch points correspond to the intersections.</p>
+
+<h3 id="union">Union</h3>
+
+<p>Intersection corresponds to conjunction, union corresponds to disjunction.</p>
+
+\[Oregon \sqcup Washington \Longleftrightarrow \lambda x.[x=Oregon]\or [x=Washington]\\
+\textlbrackdbl u_1\sqcup u_2 \textrbrackdbl = \lambda x.\textlbrackdbl u_1 \textrbrackdbl(x)\or\textlbrackdbl u_2 \textrbrackdbl(x)\]
+
+<h3 id="negation">Negation</h3>
+
+<p>US states not bordering California</p>
+
+\[Type.USState\sqcap \neg Border.California\\
+\Longleftrightarrow \lambda x.Type(x, USState)\and \neg Border(x, California)\\
+\textlbrackdbl \neg u \textrbrackdbl = \lambda x.\neg\textlbrackdbl u \textrbrackdbl(x)\]]]></content><author><name></name></author><category term="semantic" /><category term="parsing" /><summary type="html"><![CDATA[Like Lambda calculus, lambda DCS is a formal language designed to query Freebase.]]></summary></entry><entry><title type="html">Question Answering</title><link href="http://localhost:4000/2023/01/11/Question-Answering.html" rel="alternate" type="text/html" title="Question Answering" /><published>2023-01-11T15:48:22+08:00</published><updated>2023-01-11T15:48:22+08:00</updated><id>http://localhost:4000/2023/01/11/Question-Answering</id><content type="html" xml:base="http://localhost:4000/2023/01/11/Question-Answering.html"><![CDATA[<blockquote>
+  <p>factoid questions: questions that can be answered with simple facts expressed in short text</p>
+
+  <ul>
+    <li>information retrieval based QA</li>
+    <li>knowledge-based QA</li>
+  </ul>
+</blockquote>
+
+<h2 id="information-retrieval">information retrieval</h2>
+
+<blockquote>
+  <p>retrieving all manner of media based on user information needs (search engine)
+![[Screenshot 2022-11-20 at 14.11.48.png]]</p>
+</blockquote>
+
+<ul>
+  <li>
+    <h3 id="how-a-query-and-a-document-match">how a query and a document match</h3>
+
+    <ul>
+      <li>
+        <h4 id="term-weight-for-document-words">term weight for document words</h4>
+
+        <ul>
+          <li>tf-idf
+            <ul>
+              <li>term frequency tell us how frequent the word is (more frequent words are likely to be more informative about the document’s contents)
+                <ul>
+                  <li>we use $log_{10}$ instead of raw count(one word appearing 100 times does not mean it is 100 times more important), and add 1 to the count because we can’t log 0 $tf_{t,d} = log_{10}(count(t,d)+1)$</li>
+                </ul>
+              </li>
+              <li>document frequency of a term is the number of document it occurs in (words that occur only in a few documents are more useful for discriminating the documents)
+                <ul>
+                  <li>define inverse document frequency $idf_t = log_{10}\frac{N}{df_t}$ the fewer documents a word occurs in, the higher this weight (more discriminating)</li>
+                </ul>
+              </li>
+              <li>tf-idf value $tf-idf(t,d) = tf_{t,d}\cdot idf_t$</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>document scoring</p>
+
+        <ul>
+          <li>
+            <p>cosine similarity for scoring a document</p>
+
+\[score(q,d)=cos(q,d)=\frac{q\cdot d}{|q|\cdot|d|}  = \frac{q}{|q|}\cdot\frac{d}{|d|}\]
+
+            <p>where q is a query vector and d is document vector, spell out equation using td-idf values and dot product as a sum of products:</p>
+
+\[score(q,d) = \sum_{t\in q}\frac{tf\text{-}idf(t,q)}{\sqrt{\sum_{q_i\in q}tf\text{-}idf^2(q_i,q)}}\cdot \frac{tf\text{-}idf(t,d)}{\sqrt{\sum_{d_i\in d}tf\text{-}idf^2(d_i,d)}}\]
+          </li>
+          <li>
+            <p>However, we can simplify the query processing, use the following simple score:</p>
+
+\[score(q,d) = \sum_{t\in q}\frac{tf\text{-}idf(t,d)}{|d|}\]
+          </li>
+        </ul>
+      </li>
+      <li>
+        <h4 id="bm25-as-another-weight-scheme"><strong>BM25</strong> as another weight scheme</h4>
+
+        <ul>
+          <li>k as the knob that adjust the balance between term frequency and IDF</li>
+          <li>b controls the importance of document length normalization</li>
+        </ul>
+      </li>
+      <li>
+        <h4 id="inverted-index">Inverted Index</h4>
+
+        <ul>
+          <li>given a query term, gives a list of candidate documents</li>
+          <li>compositions:
+            <ul>
+              <li>dictionary: a list of terms, each pointing to a positings list for the term</li>
+              <li>postings: the list of document IDs associated with each term ![[inverted index.png]]</li>
+              <li>indexing based on bigrams works better than unigram</li>
+              <li>hashing algorithms are better than the inverted index</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <h3 id="evaluation-of-ir-systems">evaluation of IR systems</h3>
+
+    <ul>
+      <li>
+        <p><strong>Precision and Recall</strong></p>
+
+\[Precision = \frac{|R|}{|T|} \ \ \ \ \ Recall = \frac{|R|}{|U|}\]
+
+        <p>is relevant documents, T is returned ranked documents, U is all relevant documents in the whole collection</p>
+
+        <ul>
+          <li>Precision and recall are not adequate, to capture how well a system does at putting relevant documents higher in the ranking:
+            <ul>
+              <li>
+                <p>interpolated precision: choose the maximum precision value achieved at any level of recall at or aobve the one we are calculating</p>
+
+\[IntPrecision = \mathop{max}\limits_{i&gt;=r}Precision(i)\]
+              </li>
+              <li>
+                <p>compare two systems or approaches by comparing their precision-recall curves</p>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p><strong>Mean average precision</strong> (MAP)</p>
+        <ul>
+          <li>
+            <p>gives a single metric that can be used to compare systems</p>
+          </li>
+          <li>
+            <p>note precision only at those points where a relevant item has been encountered</p>
+            <ul>
+              <li>
+                <p>assume $R_r$ is the set of relevant documents at or above r, average precision is:</p>
+
+\[AP = \frac{1}{|R_r|}\sum_{d\in R_r}Precision_r(d)\]
+              </li>
+              <li>
+                <p>$Precision_r(d)$ is the precision measured at the rank where document d was found, for an ensemble of queries, we average over averages:</p>
+
+\[MAP = \frac{1}{|Q|}\sum_{q\in Q}AP(q)\]
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <h4 id="ir-with-dense-vectors">IR with dense vectors</h4>
+  </li>
+</ul>
+
+<blockquote>
+  <p><strong><em>tf-idf and BM25 algorithms only work if there is exact overlap of words between the query and document, it is likely to have vocabulary mismatch problem</em></strong></p>
+</blockquote>
+
+<ul>
+  <li>modern approaches use encoders like BERT
+    <ul>
+      <li>more complex versions like using averaging pooling over the BERT outputs or add extra weight matrices after encoding or dot product steps</li>
+      <li>for efficiency, modern systems use nearest neighbor vector search algorithms like <strong>Faiss</strong>.</li>
+    </ul>
+  </li>
+  <li>
+    <h2 id="ir-based-factoid-question-answering">IR-based Factoid Question Answering</h2>
+
+    <ul>
+      <li>also <strong>open domain QA</strong>, answer a user’s questions by finding short text segments from the web or other large collection of documents</li>
+      <li><strong>retrieve and read model</strong> ![[retrieve and read model.png]]</li>
+      <li>text retrieval</li>
+      <li>reading comprehension</li>
+    </ul>
+  </li>
+  <li>
+    <h4 id="datasets">Datasets</h4>
+
+    <ul>
+      <li>SQuAD</li>
+      <li>HotpotQA</li>
+      <li>TriviaQA</li>
+      <li>Natural Questions</li>
+      <li>TyDi QA (non-English)</li>
+    </ul>
+  </li>
+  <li>
+    <h4 id="reader">Reader</h4>
+
+    <ul>
+      <li>for extractive QA, the answer that reader produces is a span of text in the passage</li>
+      <li>standard baseline algorithm is to pass the question and passage to any encoder like BERT</li>
+      <li>BERT allows up to 512 tokens, for longer passages, we create multiple pseudo-passage observations</li>
+    </ul>
+  </li>
+  <li>
+    <h2 id="entity-linking">Entity Linking</h2>
+
+    <ul>
+      <li>
+        <p>EL is the task of associating a mention in text with representation of some real-world entity in an ontology</p>
+      </li>
+      <li>
+        <p>EL is done in two stages:</p>
+
+        <ul>
+          <li>mention detection</li>
+          <li>mention disambiguation</li>
+        </ul>
+      </li>
+      <li>
+        <h4 id="linking-based-on-anchor-dictionaries-and-web-graph">Linking based on Anchor Dictionaries and Web Graph</h4>
+
+        <ul>
+          <li>TAGME linker [[Fast and accurate annotation of short texts with Wikipedia pages.pdf]]
+            <ul>
+              <li>anchor dictionary</li>
+              <li>linke probabillity</li>
+            </ul>
+          </li>
+          <li>Mention Detection
+            <ul>
+              <li>query the anchor dictionary for each token sequence</li>
+            </ul>
+          </li>
+          <li>Mention Disambiguation
+            <ul>
+              <li>
+                <p>Spans match anchors for multiple Wikipedia entities/pages</p>
+              </li>
+              <li>
+                <p>prior probability</p>
+
+\[prior(e\rightarrow a) = p(e|a) = \frac{count(a \rightarrow e)}{link(a)}\]
+
+                <p>This gives the link of the highest probability, but it is not always correct.</p>
+              </li>
+              <li>
+                <p>relatedness/coherence</p>
+
+\[rel(A,B)=\frac{log(max(|in(A)|,|in(B)|))-log(|in(A)|\cap |in(B)|)}{log(|W|)-log(min(|in(A)|, |in(B)|))}\]
+
+                <p>W is the collection of all pages</p>
+              </li>
+              <li>
+                <p>vote given by anchor b to the candidate annotation a to X is</p>
+
+\[vote(b,X)=\frac{1}{|\mathcal{E}(b)|}\sum_{Y\in \mathcal{E}(b)}rel(X,Y)p(Y,b)\]
+              </li>
+              <li>
+                <p>Total relatedness score for a to X is</p>
+
+\[relatedness(a\rightarrow X)=\sum_{b\in \mathcal{X}\backslash a}vote(b,X)\]
+              </li>
+              <li>
+                <p>see book for more references.</p>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <h4 id="neural-graph-based-linking">Neural Graph-based linking</h4>
+
+        <ul>
+          <li><strong>biencoders</strong> allows embeddings for all the entities in the knowledge based to be prcomputed and cached [[Scalable Zero-shot Entity Linking with Dense Entity Retrieval.pdf]]</li>
+          <li>ELQ linking algorithm [[Efficient One-Pass End-to-End Entity Linking for Questions.pdf]]
+            <ul>
+              <li>Entity Mention Detection</li>
+              <li>Entity Linking</li>
+              <li>Training</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <h2 id="knowledge-based-question-answering-1719df">Knowledge-based Question Answering ^1719df</h2>
+
+    <ul>
+      <li><strong>Graph-based QA</strong>
+        <ul>
+          <li>from RDF triple stores: a set of factoids</li>
+          <li>RDF: a predicate with two arguements, expressing some simple relation or proposition \(&lt;subject, predicate, object&gt;\)</li>
+          <li>datasets
+            <ul>
+              <li>SimpleQuestions-Freebase</li>
+              <li>FreebaseQA</li>
+              <li>WEBQUESTIONS</li>
+              <li>COMPLEXWEBQUESTIONS</li>
+            </ul>
+          </li>
+          <li>steps:
+            <ul>
+              <li>entity linking</li>
+              <li>mapping from question to canonical relations in knowledge base (triple)</li>
+              <li>relation detection and linking
+                <ul>
+                  <li>compute similarity (dot product) between the encoding of the question text and an encoding for each possible relation</li>
+                </ul>
+              </li>
+              <li>ranking of answers
+                <ul>
+                  <li>heuristic</li>
+                  <li>train a classifier (concatenated entity/relation encodings -&gt; predict a probability)</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><strong>QA by semantic parsing</strong>
+        <ul>
+          <li>uses a semantic parser to map the question to a structured program to produce an answer</li>
+          <li>predicate calculus
+            <ul>
+              <li>can be converted to SQL</li>
+            </ul>
+          </li>
+          <li>query language
+            <ul>
+              <li>SQL</li>
+              <li>SPARQL</li>
+            </ul>
+          </li>
+          <li>Semantic parsing algorithms
+            <ul>
+              <li>fully supervised with questions paried with a hand-built logical form [[Logical Representations of Sentence Meaning]]
+                <ul>
+                  <li>a set of question paired with their correct logical form
+                    <ul>
+                      <li>GEOQUERY</li>
+                      <li>DROP</li>
+                      <li>ATIS</li>
+                    </ul>
+                  </li>
+                  <li>take those pairs of training tuples and produce a system that maps from new questions to their logical forms
+                    <ul>
+                      <li>baseline: simple sequence-to-sequence model</li>
+                      <li>[[Computational Semantics and Semantic Parsing]]</li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li>weakly supervised by questions paired with an answer</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <h2 id="using-language-models-to-do-qa">Using Language Models to do QA</h2>
+
+    <ul>
+      <li>query a pretrained language model, answer a question solely from information stored in its  parameters
+        <ul>
+          <li>T5 langauge model, encoder-decoder architecture [[How Much Knowledge Can You Pack Into the Parameters of a Language Model.pdf]]</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <h2 id="classic-qa-models---watson-deepqa-system">Classic QA Models - Watson DeepQA system</h2>
+
+    <ul>
+      <li><strong>Question Processing</strong>
+        <ul>
+          <li>named entities are extracted</li>
+          <li>question focus is the string of words in the question that corefers with the answer</li>
+          <li>lexical answer type: a word or words which indicate the smenatic type of the answer</li>
+        </ul>
+      </li>
+      <li><strong>Candidate Answer Generation</strong>
+        <ul>
+          <li>query structured resources with relations and known enetities</li>
+          <li>extract answers from text
+            <ul>
+              <li>IR stage to get passages</li>
+              <li>extract anchor texts and all noun phrases from passages</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><strong>Candidate Answering Scoring</strong>
+        <ul>
+          <li>a classifier that scores whether the candidate answer can be interpreted as a subcalss or instance of the potential answer type</li>
+          <li>use time and space relations extracted from structured database</li>
+          <li>use text retrieval to retrieve evidence</li>
+          <li>output is a set of candidate answers, each with a vector of scoring features</li>
+        </ul>
+      </li>
+      <li><strong>Answer merging and scoring</strong></li>
+    </ul>
+  </li>
+  <li>
+    <h2 id="evaluation-of-factoid-answers">Evaluation of Factoid Answers</h2>
+  </li>
+</ul>]]></content><author><name></name></author><category term="question" /><category term="answering" /><summary type="html"><![CDATA[Notes of Chapter Question Answering from Speech and Language Processing 3rd.ed]]></summary></entry></feed>
