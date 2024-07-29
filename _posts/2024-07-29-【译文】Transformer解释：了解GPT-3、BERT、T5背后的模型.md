@@ -14,13 +14,13 @@
 
 
 
-![image-20240725155640909](/Users/kj/Library/Application Support/typora-user-images/image-20240725155640909.png)
+![image-20240725155640909](../imgs/image-20240725155640909.png)
 
 ​	在2012年左右，我们已经能利用CNNs很好的解决一些视觉类的问题，比如识别照片里的物体，认识人脸，还有认识手写的数字。但很长一段时间以来，语言类任务中（翻译，文本归纳，文本生成，命名实体识别等等）一直没出现类似CNN般优秀的模型。不幸的是，语言是我们人类主要的交流方式。
 
 ​	在2017年Transformers出世之前，用来理解文本的深度学习技术是一种叫做循环神经网络RNN的模型，它长这样：
 
-![image-20240725160529417](/Users/kj/Library/Application Support/typora-user-images/image-20240725160529417.png)
+![image-20240725160529417](../imgs/image-20240725160529417.png)
 
 ​	如果你想把一句英语翻译成法语，RNN就会把这句英文里的单词一个一个地吃进去，并且*按顺序*把相应的法语单词吐出来。敲重点，“按顺序”。在语言里，词语的顺序是很重要的，不能随机排列。举个例子，“Jane went looking for trouble”和“Trouble went looking for Jane”意思完全就不一样。
 
@@ -92,7 +92,8 @@
 
 ​	注意力机制，能让文本模型在决定如何翻译的时候关注到原句中的每一个单词。原论文里有个很好的图：
 
-![image-20240725171024155](/Users/kj/Library/Application Support/typora-user-images/image-20240725171024155.png)
+![image-20240725171024155](../imgs/image-20240725171024155.png)
+
 
 ​	有点热力图，显示了模型在输出法语单词的时候在关注哪些英文单词。如你所想，当模型输出词语 “européenne”时，它非常关注输入词“European” 和 “Economic.”
 
